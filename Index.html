@@ -1,0 +1,588 @@
+# HVAC-master-mobile
+Test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HVAC Master Mobile</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f172a;
+    color:white;
+}
+
+.header{
+    background:#0284c7;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-around;
+    background:#1e293b;
+    padding:10px;
+}
+
+.card{
+    background:#1e293b;
+    margin:15px;
+    padding:15px;
+    border-radius:12px;
+}
+
+button{
+    width:100%;
+    margin-top:10px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00AEEF;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+.result{
+    margin-top:15px;
+    padding:10px;
+    border-radius:8px;
+}
+
+.success{
+    background:#16a34a;
+}
+
+.fail{
+    background:#dc2626;
+}
+
+.hidden{
+    display:none;
+}
+
+.slider{
+    width:100%;
+}
+
+.leakZone{
+    width:70px;
+    height:70px;
+    background:#334155;
+    border:2px solid #94a3b8;
+    border-radius:50%;
+    display:inline-block;
+    margin:8px;
+}
+
+.badge{
+    display:inline-block;
+    background:#f59e0b;
+    color:black;
+    padding:6px 10px;
+    margin:5px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.section-title{
+    margin-top:20px;
+    color:#38bdf8;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+HVAC MASTER MOBILE
+</div>
+
+<div class="stats">
+<div>Level: <span id="level">1</span></div>
+<div>XP: <span id="xp">0</span></div>
+<div>$: <span id="money">0</span></div>
+</div>
+
+<!-- SERVICE CALLS -->
+
+<div class="card">
+
+<h2 id="title">Service Call #1</h2>
+
+<p id="scenario">
+Customer says:
+"AC runs all day but won't cool."
+</p>
+
+<button onclick="answer('A')">
+A. Dirty Filter
+</button>
+
+<button onclick="answer('B')">
+B. Refrigerant Leak
+</button>
+
+<button onclick="answer('C')">
+C. Bad Capacitor
+</button>
+
+<button onclick="answer('D')">
+D. Thermostat Failure
+</button>
+
+<div id="result" class="result hidden"></div>
+
+<button id="nextBtn"
+class="hidden"
+onclick="nextMission()">
+Next Service Call
+</button>
+
+</div>
+
+<!-- MINI GAMES -->
+
+<div class="card">
+
+<h2>HVAC Training Mini Games</h2>
+
+<button onclick="showGame('capacitor')">
+🔋 Capacitor Replacement
+</button>
+
+<button onclick="showGame('charge')">
+❄️ Refrigerant Charging
+</button>
+
+<button onclick="showGame('leak')">
+🔍 Leak Detection
+</button>
+
+<button onclick="showGame('electrical')">
+⚡ Electrical Troubleshooting
+</button>
+
+<div id="gameArea"></div>
+
+</div>
+
+<!-- ACHIEVEMENTS -->
+
+<div class="card">
+<h2>Achievements</h2>
+
+<div id="badges">
+No badges yet.
+</div>
+</div>
+
+<script>
+
+let xp = 0;
+let money = 0;
+let level = 1;
+
+let earnedBadges = [];
+
+const missions = [
+
+{
+title:"Service Call #1",
+scenario:"AC runs but does not cool. Gauges show low suction and low head pressure.",
+correct:"B",
+rewardXP:100,
+rewardMoney:150
+},
+
+{
+title:"Service Call #2",
+scenario:"Weak airflow. Filter is visibly clogged.",
+correct:"A",
+rewardXP:75,
+rewardMoney:100
+},
+
+{
+title:"Service Call #3",
+scenario:"Outdoor unit will not start. Capacitor is swollen.",
+correct:"C",
+rewardXP:125,
+rewardMoney:200
+}
+
+];
+
+let currentMission = 0;
+
+function updateStats(){
+
+level = Math.floor(xp/250)+1;
+
+document.getElementById("xp").innerText = xp;
+document.getElementById("money").innerText = money;
+document.getElementById("level").innerText = level;
+
+}
+
+function reward(xpAmount,moneyAmount){
+
+xp += xpAmount;
+money += moneyAmount;
+
+updateStats();
+
+}
+
+function addBadge(name){
+
+if(!earnedBadges.includes(name)){
+
+earnedBadges.push(name);
+
+document.getElementById("badges").innerHTML =
+earnedBadges.map(b =>
+'<span class="badge">'+b+'</span>'
+).join('');
+
+}
+
+}
+
+function answer(choice){
+
+let mission = missions[currentMission];
+let result = document.getElementById("result");
+
+result.classList.remove("hidden");
+
+if(choice === mission.correct){
+
+reward(
+mission.rewardXP,
+mission.rewardMoney
+);
+
+addBadge("Tech Apprentice");
+
+result.className = "result success";
+
+result.innerHTML =
+"✅ Correct Diagnosis<br>" +
+"XP +" + mission.rewardXP +
+"<br>$" + mission.rewardMoney;
+
+}else{
+
+result.className = "result fail";
+
+result.innerHTML =
+"❌ Incorrect Diagnosis";
+}
+
+document
+.getElementById("nextBtn")
+.classList.remove("hidden");
+
+}
+
+function nextMission(){
+
+currentMission++;
+
+if(currentMission >= missions.length){
+
+document.querySelector(".card").innerHTML =
+
+"<h2>🏆 Campaign Complete</h2>" +
+
+"<p>Final XP: "+xp+"</p>" +
+
+"<p>Money Earned: $"+money+"</p>" +
+
+"<p>Technician Level: "+level+"</p>";
+
+return;
+}
+
+document.getElementById("title").innerText =
+missions[currentMission].title;
+
+document.getElementById("scenario").innerText =
+missions[currentMission].scenario;
+
+document.getElementById("result").classList.add("hidden");
+
+document.getElementById("nextBtn").classList.add("hidden");
+
+}
+
+/* MINI GAMES */
+
+function showGame(type){
+
+const area =
+document.getElementById("gameArea");
+
+if(type==="capacitor"){
+
+window.capProgress = 0;
+
+area.innerHTML = `
+
+<h3 class="section-title">
+🔋 Capacitor Replacement
+</h3>
+
+<p>Perform steps in order.</p>
+
+<button onclick="capStep(1)">
+Disconnect Power
+</button>
+
+<button onclick="capStep(2)">
+Verify Voltage
+</button>
+
+<button onclick="capStep(3)">
+Discharge Capacitor
+</button>
+
+<button onclick="capStep(4)">
+Install New Capacitor
+</button>
+
+<div id="capResult"></div>
+
+`;
+
+}
+
+if(type==="charge"){
+
+area.innerHTML = `
+
+<h3 class="section-title">
+❄️ Refrigerant Charging
+</h3>
+
+<p>Target Superheat = 12°F</p>
+
+<input
+type="range"
+min="0"
+max="20"
+value="0"
+id="chargeSlider"
+class="slider">
+
+<p>Selected:
+<span id="sliderValue">0</span>°F</p>
+
+<button onclick="checkCharge()">
+Charge System
+</button>
+
+<div id="chargeResult"></div>
+
+`;
+
+document
+.getElementById("chargeSlider")
+.oninput = function(){
+
+document
+.getElementById("sliderValue")
+.innerText = this.value;
+
+};
+
+}
+
+if(type==="leak"){
+
+area.innerHTML = `
+
+<h3 class="section-title">
+🔍 Leak Detection
+</h3>
+
+<p>Tap the leaking component.</p>
+
+<div class="leakZone"
+onclick="badLeak()"></div>
+
+<div class="leakZone"
+onclick="goodLeak()"></div>
+
+<div class="leakZone"
+onclick="badLeak()"></div>
+
+<div id="leakResult"></div>
+
+`;
+
+}
+
+if(type==="electrical"){
+
+area.innerHTML = `
+
+<h3 class="section-title">
+⚡ Electrical Troubleshooting
+</h3>
+
+<p>Find failed component.</p>
+
+<button onclick="testPart('transformer')">
+Transformer
+</button>
+
+<button onclick="testPart('contactor')">
+Contactor
+</button>
+
+<button onclick="testPart('capacitor')">
+Capacitor
+</button>
+
+<button onclick="testPart('compressor')">
+Compressor
+</button>
+
+<div id="electricalResult"></div>
+
+`;
+
+}
+
+}
+
+/* Capacitor */
+
+function capStep(step){
+
+if(step === window.capProgress + 1){
+
+window.capProgress++;
+
+if(window.capProgress === 4){
+
+reward(50,50);
+
+addBadge("Capacitor Pro");
+
+document
+.getElementById("capResult")
+.innerHTML =
+'<div class="result success">✅ Repair Complete +50 XP</div>';
+
+}
+
+}else{
+
+document
+.getElementById("capResult")
+.innerHTML =
+'<div class="result fail">❌ Wrong Procedure</div>';
+
+}
+
+}
+
+/* Charging */
+
+function checkCharge(){
+
+const value =
+parseInt(
+document.getElementById("chargeSlider").value
+);
+
+if(value===12){
+
+reward(75,100);
+
+addBadge("Charging Expert");
+
+document
+.getElementById("chargeResult")
+.innerHTML =
+'<div class="result success">✅ Perfect Charge +75 XP</div>';
+
+}else{
+
+document
+.getElementById("chargeResult")
+.innerHTML =
+'<div class="result fail">⚠️ Over/Under Charged</div>';
+
+}
+
+}
+
+/* Leak */
+
+function goodLeak(){
+
+reward(100,150);
+
+addBadge("Leak Hunter");
+
+document
+.getElementById("leakResult")
+.innerHTML =
+'<div class="result success">✅ Leak Located!</div>';
+
+}
+
+function badLeak(){
+
+document
+.getElementById("leakResult")
+.innerHTML =
+'<div class="result fail">❌ No Leak Found Here</div>';
+
+}
+
+/* Electrical */
+
+function testPart(part){
+
+const r =
+document.getElementById("electricalResult");
+
+if(part==="capacitor"){
+
+reward(125,200);
+
+addBadge("Electrical Tech");
+
+r.innerHTML =
+'<div class="result success">✅ Failed Capacitor Found!</div>';
+
+}else{
+
+r.innerHTML =
+'<div class="result fail">Voltage Normal</div>';
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
