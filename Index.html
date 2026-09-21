@@ -6,78 +6,188 @@
   <title>HVAC Master Mobile</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #1e293b;
-      --panel-2: #334155;
-      --primary: #00AEEF;
-      --primary-dark: #0284c7;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --warning: #f59e0b;
-      --text: #ffffff;
-      --muted: #cbd5e1;
-      --border: #94a3b8;
+      --bg: #071722;
+      --bg-2: #0e1f2d;
+      --panel: rgba(15, 23, 42, 0.84);
+      --panel-alt: #122334;
+      --panel-soft: rgba(148, 163, 184, 0.08);
+      --primary: #38bdf8;
+      --primary-strong: #00AEEF;
+      --primary-dark: #0b5ea8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #fbbf24;
+      --text: #e6f4ff;
+      --muted: #b9d6eb;
+      --border: rgba(125, 211, 252, 0.3);
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+      --glow: 0 0 0 1px rgba(56, 189, 248, 0.2), 0 0 22px rgba(56, 189, 248, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top, rgba(56,189,248,0.15), transparent 30%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
+      min-height: 100vh;
       line-height: 1.5;
     }
 
+    .app-shell {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px 10px 40px;
+    }
+
     .header {
-      background: var(--primary-dark);
-      padding: 18px 15px;
-      text-align: center;
-      font-size: 24px;
+      background: linear-gradient(135deg, var(--primary-dark), #0c7bb3 40%, #0f172a 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px;
+      margin-bottom: 14px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 1.05rem;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #7dd3fc, var(--primary-strong));
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      color: #082235;
+      box-shadow: var(--glow);
+    }
+
+    .status-pill {
+      border: 1px solid rgba(34, 197, 94, 0.55);
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       font-weight: bold;
     }
 
+    .header-title {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      margin: 0;
+      text-shadow: 0 0 18px rgba(125, 211, 252, 0.5);
+    }
+
     .stats {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: var(--panel);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-box {
+      background: linear-gradient(180deg, rgba(148,163,184,0.08), rgba(15,23,42,0.2));
+      border-radius: 12px;
       padding: 12px 10px;
-      gap: 8px;
-      flex-wrap: wrap;
-      font-weight: 600;
+      text-align: center;
+      border: 1px solid rgba(125, 211, 252, 0.12);
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 800;
+      color: var(--text);
     }
 
     .card {
-      background: var(--panel);
-      margin: 15px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(12, 20, 34, 0.9));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      margin: 16px 0;
       padding: 18px 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: #dff7ff;
+    }
+
+    .service-panel {
+      background: rgba(148, 163, 184, 0.03);
+      border: 1px solid rgba(125, 211, 252, 0.12);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .service-panel p {
+      margin: 0 0 12px;
+      color: var(--muted);
     }
 
     button {
       width: 100%;
       margin-top: 10px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: var(--primary);
+      padding: 14px 12px;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #1d9fe6, #0b6ca8);
       color: var(--text);
-      font-size: 16px;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 0.12s ease, opacity 0.2s ease;
+      transition: transform 0.12s ease, box-shadow 0.16s ease, opacity 0.16s ease;
       min-height: 48px;
+      box-shadow: 0 10px 24px rgba(14, 116, 144, 0.18);
     }
 
     button:hover {
-      opacity: 0.96;
+      opacity: 0.98;
+      box-shadow: 0 12px 30px rgba(14, 116, 144, 0.28);
     }
 
     button:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
     }
 
     button:focus-visible {
@@ -88,21 +198,24 @@
     .result {
       margin-top: 15px;
       padding: 12px 10px;
-      border-radius: 8px;
-      font-weight: 600;
+      border-radius: 10px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.12);
     }
 
     .success {
-      background: var(--success);
+      background: rgba(34, 197, 94, 0.18);
+      color: #d1fae5;
+      border-color: rgba(34, 197, 94, 0.32);
     }
 
     .fail {
-      background: var(--danger);
+      background: rgba(239, 68, 68, 0.18);
+      color: #fee2e2;
+      border-color: rgba(239, 68, 68, 0.32);
     }
 
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
 
     .slider {
       width: 100%;
@@ -110,98 +223,182 @@
     }
 
     .leakZone {
-      width: 70px;
-      height: 70px;
-      background: var(--panel-2);
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(180deg, #334155, #1e293b);
       border: 2px solid var(--border);
       border-radius: 50%;
       display: inline-block;
       margin: 8px;
       cursor: pointer;
-      transition: transform 0.12s ease, border-color 0.2s ease;
+      transition: transform 0.12s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: inset 0 0 14px rgba(255,255,255,0.04);
     }
 
     .leakZone:hover {
       border-color: #e2e8f0;
-      transform: scale(1.03);
+      transform: scale(1.04);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.22);
     }
 
     .badge {
       display: inline-block;
-      background: var(--warning);
-      color: #111827;
+      background: linear-gradient(180deg, #fbbf24, #f59e0b);
+      color: #1f2937;
       padding: 6px 10px;
       margin: 5px;
       border-radius: 20px;
-      font-weight: bold;
+      font-weight: 800;
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
     }
 
     .section-title {
       margin-top: 20px;
-      color: #38bdf8;
+      color: var(--primary);
+      font-size: 1.15rem;
     }
 
     #gameArea {
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
     .game-card {
-      background: rgba(255,255,255,0.02);
-      border-radius: 10px;
-      padding: 10px;
+      background: rgba(148, 163, 184, 0.03);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      border-radius: 14px;
+      padding: 12px;
       margin-top: 12px;
     }
 
+    .game-card p {
+      color: var(--muted);
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .mini-metric {
+      background: rgba(125, 211, 252, 0.05);
+      border: 1px solid rgba(125, 211, 252, 0.12);
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .mini-metric strong {
+      display: block;
+      font-size: 1.1rem;
+      color: #dff7ff;
+    }
+
+    .mini-metric span {
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
     @media (max-width: 480px) {
-      .header {
-        font-size: 22px;
+      .app-shell {
+        padding-left: 8px;
+        padding-right: 8px;
       }
 
-      .stats {
-        justify-content: space-between;
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats,
+      .metrics-row {
+        grid-template-columns: 1fr;
       }
 
       .card {
-        margin: 12px 10px;
-        padding: 15px 12px;
+        margin: 12px 0;
+        padding: 14px 12px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="header">HVAC MASTER MOBILE</div>
+  <div class="app-shell">
+    <div class="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-mark">❄</div>
+          <span>HVAC Pro</span>
+        </div>
+        <div class="status-pill">Online</div>
+      </div>
+      <h1 class="header-title">HVAC Master Mobile</h1>
+    </div>
 
-  <div class="stats">
-    <div>Level: <span id="level">1</span></div>
-    <div>XP: <span id="xp">0</span></div>
-    <div>$: <span id="money">0</span></div>
-  </div>
+    <div class="stats">
+      <div class="stat-box">
+        <span class="stat-label">Level</span>
+        <span id="level" class="stat-value">1</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">XP</span>
+        <span id="xp" class="stat-value">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">$</span>
+        <span id="money" class="stat-value">0</span>
+      </div>
+    </div>
 
-  <div class="card" id="missionCard">
-    <h2 id="title">Service Call #1</h2>
-    <p id="scenario">Customer says: "AC runs all day but won't cool."</p>
+    <div class="card" id="missionCard">
+      <h2 id="title">Service Call #1</h2>
 
-    <button type="button" data-answer="A">A. Dirty Filter</button>
-    <button type="button" data-answer="B">B. Refrigerant Leak</button>
-    <button type="button" data-answer="C">C. Bad Capacitor</button>
-    <button type="button" data-answer="D">D. Thermostat Failure</button>
+      <div class="service-panel">
+        <p id="scenario">
+          Customer says: "AC runs all day but won't cool."
+        </p>
 
-    <div id="result" class="result hidden" aria-live="polite"></div>
-    <button id="nextBtn" class="hidden" type="button" onclick="nextMission()">Next Service Call</button>
-  </div>
+        <div class="metrics-row">
+          <div class="mini-metric">
+            <strong>72°F</strong>
+            <span>Indoor</span>
+          </div>
+          <div class="mini-metric">
+            <strong>95°F</strong>
+            <span>Outdoor</span>
+          </div>
+          <div class="mini-metric">
+            <strong>Low</strong>
+            <span>Pressure</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="card">
-    <h2>HVAC Training Mini Games</h2>
-    <button type="button" onclick="showGame('capacitor')">🔋 Capacitor Replacement</button>
-    <button type="button" onclick="showGame('charge')">❄️ Refrigerant Charging</button>
-    <button type="button" onclick="showGame('leak')">🔍 Leak Detection</button>
-    <button type="button" onclick="showGame('electrical')">⚡ Electrical Troubleshooting</button>
-    <div id="gameArea"></div>
-  </div>
+      <button type="button" data-answer="A">A. Dirty Filter</button>
+      <button type="button" data-answer="B">B. Refrigerant Leak</button>
+      <button type="button" data-answer="C">C. Bad Capacitor</button>
+      <button type="button" data-answer="D">D. Thermostat Failure</button>
 
-  <div class="card">
-    <h2>Achievements</h2>
-    <div id="badges">No badges yet.</div>
+      <div id="result" class="result hidden" aria-live="polite"></div>
+      <button id="nextBtn" class="hidden" type="button" onclick="nextMission()">Next Service Call</button>
+    </div>
+
+    <div class="card">
+      <h2>HVAC Training Mini Games</h2>
+      <button type="button" onclick="showGame('capacitor')">🔋 Capacitor Replacement</button>
+      <button type="button" onclick="showGame('charge')">❄️ Refrigerant Charging</button>
+      <button type="button" onclick="showGame('leak')">🔍 Leak Detection</button>
+      <button type="button" onclick="showGame('electrical')">⚡ Electrical Troubleshooting</button>
+      <div id="gameArea"></div>
+    </div>
+
+    <div class="card">
+      <h2>Achievements</h2>
+      <div id="badges">No badges yet.</div>
+    </div>
   </div>
 
   <script>
